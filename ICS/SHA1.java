@@ -1,40 +1,26 @@
+import java.util.Scanner;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.io.*;
-import java.util.*;
 
-public class SHA1 {
+public class SHA1{
+public static void main(String[] args) throws NoSuchAlgorithmException{
+Scanner in=new Scanner(System.in);
+System.out.print("Enter message: ");
+String input=in.nextLine();
 
-    static String sha1(String ip) throws NoSuchAlgorithmException {
+MessageDigest md=MessageDigest.getInstance("SHA1");
+md.update(input.getBytes());
 
-        Scanner input = new Scanner(System.in);
-        
-        //Generates a MessageDigest object that implements the specified digest algorithm
-        MessageDigest md = MessageDigest.getInstance("SHA1");
-       
-        //     Completes the hash computation by performing final operations such as padding.
-        byte[] result = md.digest(ip.getBytes());
-        StringBuffer sb = new StringBuffer();
-
-        for (int i = 0; i < result.length; i++) {
-            // byte to hexademical conversion use any one of the foll
-            // explanation at
-            // https://stackoverflow.com/questions/25838473/what-does-0xff-do-and-md5-structure
-            // sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
-            // sb.append(String.format("%02x", result[i]));
-            sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
-        }
-
-        return sb.toString();
-
-    }
-
-    public static void main(String[] args) throws NoSuchAlgorithmException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter a String: ");
-        String input = scanner.nextLine();
-        System.out.println("\nInput String: " + input + " \nMessage digest using SHA1: " + sha1(input));
-
-    }
-
+byte[] digest=md.digest();
+StringBuffer sb=new StringBuffer();
+for(byte b : digest)
+{
+sb.append(String.format("%02x",b & 0xff));
 }
+System.out.println("SHA1 Hash: "+sb.toString());
+}
+}
+
+Simpler
+	
